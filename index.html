@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HappyToilet 🚽</title>
-  <!-- Supabase SDK 추가 -->
+  <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Kakao Maps API (키 적용 및 서비스 라이브러리 포함) -->
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f5159631e63c067e54db06dbdbda6296&libraries=services"></script>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -53,10 +55,7 @@
       letter-spacing: -0.5px;
     }
     .logo span { font-size: 1.6rem; }
-    nav .nav-btns {
-      display: flex;
-      gap: 0.75rem;
-    }
+    nav .nav-btns { display: flex; gap: 0.75rem; }
     .btn {
       font-family: 'Nunito', sans-serif;
       font-weight: 700;
@@ -67,21 +66,11 @@
       font-size: 0.9rem;
       transition: all 0.2s;
     }
-    .btn-outline {
-      background: transparent;
-      border: 2px solid rgba(255,255,255,0.7);
-      color: #fff;
-    }
+    .btn-outline { background: transparent; border: 2px solid rgba(255,255,255,0.7); color: #fff; }
     .btn-outline:hover { background: rgba(255,255,255,0.15); }
-    .btn-white {
-      background: #fff;
-      color: var(--primary);
-    }
+    .btn-white { background: #fff; color: var(--primary); }
     .btn-white:hover { background: #e0f0ff; }
-    .btn-primary {
-      background: var(--primary);
-      color: #fff;
-    }
+    .btn-primary { background: var(--primary); color: #fff; }
     .btn-primary:hover { background: var(--primary-dark); }
 
     /* HERO */
@@ -98,11 +87,7 @@
       inset: 0;
       background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
-    .hero-bubbles {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
+    .hero-bubbles { position: absolute; inset: 0; pointer-events: none; }
     .bubble {
       position: absolute;
       border-radius: 50%;
@@ -133,13 +118,7 @@
       line-height: 1.6;
       position: relative;
     }
-    .hero-cta {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      position: relative;
-    }
+    .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; }
     .btn-hero {
       padding: 0.8rem 2rem;
       font-size: 1rem;
@@ -150,17 +129,9 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    .btn-hero-main {
-      background: var(--accent2);
-      color: var(--text);
-      box-shadow: 0 4px 18px rgba(247,201,72,0.4);
-    }
+    .btn-hero-main { background: var(--accent2); color: var(--text); box-shadow: 0 4px 18px rgba(247,201,72,0.4); }
     .btn-hero-main:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(247,201,72,0.5); }
-    .btn-hero-sub {
-      background: rgba(255,255,255,0.15);
-      color: #fff;
-      border: 2px solid rgba(255,255,255,0.5);
-    }
+    .btn-hero-sub { background: rgba(255,255,255,0.15); color: #fff; border: 2px solid rgba(255,255,255,0.5); }
     .btn-hero-sub:hover { background: rgba(255,255,255,0.25); }
 
     /* STATS */
@@ -173,213 +144,71 @@
       border-bottom: 1px solid var(--border);
       overflow-x: auto;
     }
-    .stat-item {
-      padding: 1.2rem 2.5rem;
-      text-align: center;
-      border-right: 1px solid var(--border);
-      flex: 1;
-      min-width: 120px;
-    }
+    .stat-item { padding: 1.2rem 2.5rem; text-align: center; border-right: 1px solid var(--border); flex: 1; min-width: 120px; }
     .stat-item:last-child { border-right: none; }
-    .stat-num {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 900;
-      font-size: 1.6rem;
-      color: var(--primary);
-    }
-    .stat-label {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
+    .stat-num { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.6rem; color: var(--primary); }
+    .stat-label { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
 
     /* SEARCH */
-    .search-section {
-      max-width: 720px;
-      margin: 2.5rem auto 0;
-      padding: 0 1.5rem;
-    }
+    .search-section { max-width: 720px; margin: 2.5rem auto 0; padding: 0 1.5rem; }
     .search-box {
-      display: flex;
-      background: var(--card);
-      border: 2px solid var(--border);
-      border-radius: 50px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
+      display: flex; background: var(--card); border: 2px solid var(--border);
+      border-radius: 50px; overflow: hidden; box-shadow: var(--shadow);
       transition: border-color 0.2s;
     }
     .search-box:focus-within { border-color: var(--primary); }
     .search-box input {
-      flex: 1;
-      border: none;
-      outline: none;
-      padding: 0.85rem 1.5rem;
-      font-size: 0.95rem;
-      font-family: 'Noto Sans KR', sans-serif;
-      background: transparent;
-      color: var(--text);
+      flex: 1; border: none; outline: none; padding: 0.85rem 1.5rem;
+      font-size: 0.95rem; font-family: 'Noto Sans KR', sans-serif;
+      background: transparent; color: var(--text);
     }
-    .search-box button {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 0 1.5rem;
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .search-box button:hover { background: var(--primary-dark); }
-    .search-tags {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-top: 0.75rem;
-      padding: 0 0.5rem;
-    }
+    .search-box button { background: var(--primary); color: #fff; border: none; padding: 0 1.5rem; font-size: 1.2rem; cursor: pointer; }
+    .search-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.75rem; padding: 0 0.5rem; }
     .tag {
-      background: var(--bg2);
-      color: var(--primary-dark);
-      border-radius: 50px;
-      padding: 0.3rem 0.85rem;
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s;
-      border: 1px solid var(--border);
+      background: var(--bg2); color: var(--primary-dark); border-radius: 50px;
+      padding: 0.3rem 0.85rem; font-size: 0.8rem; font-weight: 600;
+      cursor: pointer; transition: all 0.15s; border: 1px solid var(--border);
     }
-    .tag:hover { background: var(--primary); color: #fff; }
-    .tag.active { background: var(--primary); color: #fff; }
+    .tag:hover, .tag.active { background: var(--primary); color: #fff; }
 
     /* MAIN LAYOUT */
-    .main-wrap {
-      max-width: 1100px;
-      margin: 2.5rem auto;
-      padding: 0 1.5rem;
-      display: grid;
-      grid-template-columns: 1fr 300px;
-      gap: 2rem;
-    }
-    @media (max-width: 768px) {
-      .main-wrap { grid-template-columns: 1fr; }
-    }
+    .main-wrap { max-width: 1100px; margin: 2.5rem auto; padding: 0 1.5rem; display: grid; grid-template-columns: 1fr 300px; gap: 2rem; }
+    @media (max-width: 768px) { .main-wrap { grid-template-columns: 1fr; } }
 
     .section-title {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 900;
-      font-size: 1.3rem;
-      color: var(--text);
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
+      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.3rem;
+      color: var(--text); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem;
     }
-    .section-title .pill {
-      background: var(--primary);
-      color: #fff;
-      border-radius: 50px;
-      padding: 0.15rem 0.7rem;
-      font-size: 0.75rem;
-    }
+    .section-title .pill { background: var(--primary); color: #fff; border-radius: 50px; padding: 0.15rem 0.7rem; font-size: 0.75rem; }
 
-    /* REVIEW CARDS */
+    /* REVIEWS */
     .reviews-list { display: flex; flex-direction: column; gap: 1.25rem; }
     .review-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 1.4rem 1.5rem;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-      transition: transform 0.2s, box-shadow 0.2s;
-      cursor: pointer;
+      background: var(--card); border-radius: var(--radius); padding: 1.4rem 1.5rem;
+      box-shadow: var(--shadow); border: 1px solid var(--border);
+      transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;
       animation: slideUp 0.3s ease both;
     }
-    .review-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 32px rgba(26,127,196,0.15);
-    }
-    .review-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 0.75rem;
-    }
-    .review-place {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 900;
-      font-size: 1.05rem;
-      color: var(--primary-dark);
-    }
-    .review-location {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
+    .review-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(26,127,196,0.15); }
+    .review-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
+    .review-place { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.05rem; color: var(--primary-dark); }
+    .review-location { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
     .stars { color: var(--accent2); font-size: 1rem; letter-spacing: 1px; }
-    .review-body {
-      font-size: 0.88rem;
-      line-height: 1.65;
-      color: #3a5f7a;
-      margin-bottom: 0.85rem;
-    }
-    .review-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .review-meta {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-    .avatar {
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: #fff;
-    }
+    .review-body { font-size: 0.88rem; line-height: 1.65; color: #3a5f7a; margin-bottom: 0.85rem; }
+    .badge-list { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .badge { background: var(--bg2); color: var(--primary); border-radius: 6px; padding: 0.2rem 0.55rem; font-size: 0.72rem; font-weight: 600; border: 1px solid var(--border); }
+    .badge.green { background: #e0f9f5; color: #00917a; border-color: #b0f0e6; }
+    .review-footer { display: flex; justify-content: space-between; align-items: center; }
+    .review-meta { display: flex; gap: 0.5rem; align-items: center; }
+    .avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; color: #fff; }
     .review-author { font-size: 0.8rem; color: var(--text-muted); }
     .review-date { font-size: 0.75rem; color: #aac5d8; }
-    .badge-list { display: flex; gap: 0.4rem; flex-wrap: wrap; }
-    .badge {
-      background: var(--bg2);
-      color: var(--primary);
-      border-radius: 6px;
-      padding: 0.2rem 0.55rem;
-      font-size: 0.72rem;
-      font-weight: 600;
-      border: 1px solid var(--border);
-    }
-    .badge.green { background: #e0f9f5; color: #00917a; border-color: #b0f0e6; }
 
     /* SIDEBAR */
     .sidebar { display: flex; flex-direction: column; gap: 1.25rem; }
-    .side-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 1.3rem;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-    }
-    .side-card-title {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 900;
-      font-size: 1rem;
-      color: var(--text);
-      margin-bottom: 0.9rem;
-    }
-    .top-place {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.5rem 0.5rem;
-      border-bottom: 1px solid var(--border);
-      cursor: pointer;
-      transition: background 0.15s;
-      border-radius: 8px;
-    }
-    .top-place:last-child { border-bottom: none; }
+    .side-card { background: var(--card); border-radius: var(--radius); padding: 1.3rem; box-shadow: var(--shadow); border: 1px solid var(--border); }
+    .side-card-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem; color: var(--text); margin-bottom: 0.9rem; }
+    .top-place { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.5rem; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.15s; border-radius: 8px; }
     .top-place:hover { background: var(--bg); }
     .place-rank { font-weight: 900; color: var(--primary); width: 24px; text-align: center; }
     .place-info { flex: 1; }
@@ -387,91 +216,34 @@
     .place-sub { font-size: 0.75rem; color: var(--text-muted); }
     .place-score { font-weight: 900; color: var(--accent2); }
 
-    .map-preview {
-      background: linear-gradient(135deg, #b3d8f0, #d0f0f9);
-      border-radius: 12px;
-      height: 140px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 0.8rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .map-grid {
-      position: absolute;
-      inset: 0;
-      background-image: linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px);
-      background-size: 20px 20px;
-    }
-    .map-pin { position: relative; font-size: 2.2rem; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.2)); }
+    /* MAP - Kakao Map 전용 스타일 */
+    #map { width: 100%; height: 250px; border-radius: 12px; margin-bottom: 0.8rem; background: #eee; }
 
-    .write-review-cta {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      border-radius: var(--radius);
-      padding: 1.3rem;
-      text-align: center;
-      color: #fff;
-    }
+    .write-review-cta { background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: var(--radius); padding: 1.3rem; text-align: center; color: #fff; }
     .write-review-cta p { font-size: 0.85rem; margin-bottom: 0.75rem; opacity: 0.9; }
-    .write-review-cta button {
-      background: #fff; color: var(--primary-dark);
-      font-weight: 900; border: none; border-radius: 50px;
-      padding: 0.65rem 1.5rem; width: 100%; cursor: pointer;
-    }
+    .write-review-cta button { background: #fff; color: var(--primary-dark); font-weight: 900; border: none; border-radius: 50px; padding: 0.65rem 1.5rem; width: 100%; cursor: pointer; }
 
     /* MODAL */
-    .modal-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(10,40,70,0.5); backdrop-filter: blur(4px);
-      z-index: 1000; justify-content: center; align-items: flex-start;
-      padding: 2rem 1rem; overflow-y: auto;
-    }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(10,40,70,0.5); backdrop-filter: blur(4px); z-index: 1000; justify-content: center; align-items: flex-start; padding: 2rem 1rem; overflow-y: auto; }
     .modal-overlay.active { display: flex; }
-    .modal {
-      background: var(--card); border-radius: 24px; padding: 2rem;
-      width: 100%; max-width: 520px; margin: auto;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-      animation: slideUp 0.3s ease;
-    }
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .modal { background: var(--card); border-radius: 24px; padding: 2rem; width: 100%; max-width: 520px; margin: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.25); animation: slideUp 0.3s ease; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
     .modal-title { font-weight: 900; font-size: 1.3rem; }
-    .modal-close {
-      background: var(--bg2); border: none; border-radius: 50%;
-      width: 34px; height: 34px; cursor: pointer;
-    }
+    .modal-close { background: var(--bg2); border: none; border-radius: 50%; width: 34px; height: 34px; cursor: pointer; }
     .form-group { margin-bottom: 1.1rem; }
     .form-label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem; }
-    .form-input {
-      width: 100%; border: 2px solid var(--border); border-radius: 10px;
-      padding: 0.7rem 1rem; font-family: inherit; background: var(--bg); outline: none;
-    }
+    .form-input { width: 100%; border: 2px solid var(--border); border-radius: 10px; padding: 0.7rem 1rem; font-family: inherit; background: var(--bg); outline: none; }
     .form-input:focus { border-color: var(--primary); background: #fff; }
     .star-select { display: flex; gap: 0.4rem; }
     .star-btn { font-size: 1.6rem; cursor: pointer; filter: grayscale(1); background: none; border: none; transition: 0.1s; }
     .star-btn.active { filter: grayscale(0); transform: scale(1.2); }
     .checkbox-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .checkbox-item {
-      display: flex; align-items: center; gap: 0.4rem; background: var(--bg);
-      border: 1px solid var(--border); border-radius: 8px; padding: 0.35rem 0.75rem;
-      cursor: pointer; font-size: 0.82rem;
-    }
-    .form-submit {
-      width: 100%; background: var(--primary); color: #fff;
-      border: none; border-radius: 50px; padding: 0.9rem;
-      font-weight: 900; cursor: pointer; margin-top: 0.5rem;
-    }
+    .checkbox-item { display: flex; align-items: center; gap: 0.4rem; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.35rem 0.75rem; cursor: pointer; font-size: 0.82rem; }
+    .form-submit { width: 100%; background: var(--primary); color: #fff; border: none; border-radius: 50px; padding: 0.9rem; font-weight: 900; cursor: pointer; margin-top: 0.5rem; }
 
     /* TOAST */
-    .toast {
-      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(80px);
-      background: var(--primary-dark); color: #fff; padding: 0.8rem 1.8rem;
-      border-radius: 50px; font-weight: 700; z-index: 2000; transition: transform 0.3s;
-    }
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--primary-dark); color: #fff; padding: 0.8rem 1.8rem; border-radius: 50px; font-weight: 700; z-index: 2000; transition: transform 0.3s; }
     .toast.show { transform: translateX(-50%) translateY(0); }
 
     footer { background: var(--primary-dark); color: rgba(255,255,255,0.7); text-align: center; padding: 2rem; margin-top: 3rem; }
@@ -526,7 +298,6 @@
   <div>
     <div class="section-title">최근 리뷰 <span class="pill" id="review-count">0</span></div>
     <div class="reviews-list" id="reviews-container">
-        <!-- 리뷰 로딩 스피너 혹은 메시지 -->
         <p style="text-align:center; padding:2rem; color:var(--text-muted);">데이터를 불러오는 중...</p>
     </div>
   </div>
@@ -538,11 +309,12 @@
     </div>
     <div class="side-card">
       <div class="side-card-title">📍 내 주변 화장실</div>
-      <div class="map-preview"><div class="map-grid"></div><div class="map-pin">📍</div></div>
-      <button class="btn btn-primary" style="width:100%; border-radius:10px;">지도에서 보기</button>
+      <!-- 실제 카카오맵이 로드될 영역 -->
+      <div id="map"></div>
+      <button class="btn btn-primary" style="width:100%; border-radius:10px;" onclick="searchToilets()">현위치 주변 검색</button>
     </div>
     <div class="side-card">
-      <div class="side-card-title">🏆 추천 화장실 </div>
+      <div class="side-card-title">🏆 추천 화장실</div>
       <div id="top-places"></div>
     </div>
   </aside>
@@ -610,9 +382,8 @@
 
 <script>
 // ── 1. SUPABASE 설정 ──────────────────────────────────
-// 본인의 Supabase URL과 Anon Key로 꼭 바꿔주세요!
 const SUPABASE_URL = 'https://giwpsjqxhgyytcfpsyod.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_d89JxB6wFVPGPNfOet_kbA_HMcnSJ76';
+const SUPABASE_KEY = 'sb_publishable_d89JxB6wFVPGPNfOet_kbA_HMcnSJ76'; // 실제 Anon 키로 교체 필요
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── 2. DATA & STATE ──────────────────────────────────
@@ -622,9 +393,88 @@ let selectedStar = 0;
 let activeCategory = '전체';
 let activeTag = '';
 
-// ── 3. 초기화 (데이터 가져오기) ─────────────────────────
+// ── 3. Kakao Map 초기 설정 ───────────────────────────────
+let map;
+let ps;
+let infowindow;
+
+function initMap() {
+    const container = document.getElementById('map');
+    const options = {
+        center: new kakao.maps.LatLng(37.505, 126.957), // 기본값: 중앙대
+        level: 4
+    };
+    map = new kakao.maps.Map(container, options);
+    ps = new kakao.maps.services.Places();
+    infowindow = new kakao.maps.InfoWindow({zIndex:1});
+
+    // 현재 위치 가져오기
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const locPosition = new kakao.maps.LatLng(lat, lon);
+            map.setCenter(locPosition);
+            searchToilets(); 
+        });
+    }
+}
+
+function searchToilets() {
+    function searchToilets() {
+    // map 객체가 없으면 실행하지 않음
+    if (!map) {
+        alert("지도가 아직 로드되지 않았습니다. 잠시만 기다려주세요!");
+        return;
+    }
+    
+    const currentCenter = map.getCenter();
+    ps.keywordSearch('화장실', placesSearchCB, {
+        location: currentCenter,
+        radius: 2000
+    });
+}
+}
+
+function placesSearchCB(data, status) {
+    if (status === kakao.maps.services.Status.OK) {
+        for (let i = 0; i < data.length; i++) {
+            displayToiletMarker(data[i]);
+        }
+    }
+}
+
+function displayToiletMarker(place) {
+    // 커스텀 마커 이미지 (이모지 기반 무료 아이콘 또는 변기 아이콘 사용 가능)
+    const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png'; // 기본 별 마커 예시
+    const imageSize = new kakao.maps.Size(24, 35); 
+    const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+    const marker = new kakao.maps.Marker({
+        map: map,
+        position: new kakao.maps.LatLng(place.y, place.x),
+        image: markerImage
+    });
+
+    kakao.maps.event.addListener(marker, 'click', function() {
+        const content = `
+            <div style="padding:10px; font-size:12px; min-width:150px;">
+                <strong>${place.place_name}</strong><br>
+                <button onclick="fillPlaceName('${place.place_name}')" style="margin-top:5px; padding:2px 5px; border:none; background:var(--primary); color:#fff; border-radius:4px; cursor:pointer;">리뷰 쓰기</button>
+            </div>`;
+        infowindow.setContent(content);
+        infowindow.open(map, marker);
+    });
+}
+
+function fillPlaceName(name) {
+    document.getElementById('place-name').value = name;
+    openModal();
+}
+
+// ── 4. 초기화 ──────────────────────────────────────────
 async function init() {
-    await fetchReviews();
+   await fetchReviews();
     renderTopPlaces();
     updateStats();
 }
@@ -635,15 +485,12 @@ async function fetchReviews() {
         .select('*')
         .order('created_at', { ascending: false });
 
-    if (error) {
-        console.error('Error:', error);
-        return;
-    }
+    if (error) { console.error('Error:', error); return; }
     allReviews = data;
     applyFilters();
 }
 
-// ── 4. 렌더링 함수 ────────────────────────────────────
+// ── 5. 렌더링 함수 ─────────────────────────────────────
 function renderReviews(list) {
     const container = document.getElementById('reviews-container');
     document.getElementById('review-count').textContent = list.length;
@@ -660,9 +507,7 @@ function renderReviews(list) {
                     <div class="review-place">🚽 ${r.place}</div>
                     <div class="review-location">📍 ${r.location || '정보없음'} · ${r.category}</div>
                 </div>
-                <div>
-                    <div class="stars">${'⭐'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
-                </div>
+                <div><div class="stars">${'⭐'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div></div>
             </div>
             <div class="review-body">${r.review_text}</div>
             <div class="badge-list" style="margin-bottom:0.75rem">
@@ -680,9 +525,8 @@ function renderReviews(list) {
 }
 
 function renderTopPlaces() {
-    // 임시 TOP 5 데이터 (실제 데이터 기반으로 쿼리 가능)
     const tops = [
-        { name: '310관 7층 한강뷰 화장실 ', sub: '서울 동작구', score: '5.0' },
+        { name: '310관 7층 한강뷰 화장실', sub: '서울 동작구', score: '5.0' },
         { name: '약대 1층 화장실', sub: '서울 동작구', score: '4.8' }
     ];
     document.getElementById('top-places').innerHTML = tops.map((p, i) => `
@@ -704,15 +548,13 @@ function updateStats() {
     document.getElementById('stat-users').textContent = Math.floor(allReviews.length * 0.7 + 5);
 }
 
-// ── 5. 필터 및 검색 ───────────────────────────────────
+// ── 6. 필터 및 검색 ───────────────────────────────────
 function applyFilters() {
     let list = [...allReviews];
     if (activeCategory !== '전체') list = list.filter(r => r.category === activeCategory);
     if (activeTag) list = list.filter(r => (r.tags || []).includes(activeTag));
-    
     const q = document.getElementById('search-input').value.trim().toLowerCase();
     if (q) list = list.filter(r => r.place.toLowerCase().includes(q));
-    
     renderReviews(list);
 }
 
@@ -731,16 +573,13 @@ function filterTag(tag, el) {
 
 function doSearch() { applyFilters(); }
 
-// ── 6. 리뷰 제출 (DB 저장) ─────────────────────────────
+// ── 7. 리뷰 제출 ──────────────────────────────────────
 async function submitReview() {
     const place = document.getElementById('place-name').value.trim();
     const text = document.getElementById('review-text').value.trim();
     const btn = document.getElementById('submit-btn');
 
-    if (!place || !selectedStar || !text) {
-        alert('모든 항목을 입력해주세요!');
-        return;
-    }
+    if (!place || !selectedStar || !text) { alert('모든 항목을 입력해주세요!'); return; }
 
     btn.disabled = true;
     btn.textContent = '등록 중...';
@@ -762,37 +601,20 @@ async function submitReview() {
             color: COLORS[Math.floor(Math.random() * COLORS.length)]
         }]);
 
-    if (error) {
-        alert('저장 실패: ' + error.message);
-    } else {
+    if (error) { alert('저장 실패: ' + error.message); } 
+    else {
         showToast('✅ 리뷰가 성공적으로 등록되었습니다!');
-        closeModal();
-        resetForm();
-        await fetchReviews(); // 목록 갱신
-        updateStats();
+        closeModal(); resetForm();
+        await fetchReviews(); updateStats();
     }
-    btn.disabled = false;
-    btn.textContent = '🚽 리뷰 등록하기';
+    btn.disabled = false; btn.textContent = '🚽 리뷰 등록하기';
 }
 
-// ── 7. UI 유틸리티 ────────────────────────────────────
-function openModal() {
-    document.getElementById('modal-overlay').classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-function closeModal() {
-    document.getElementById('modal-overlay').classList.remove('active');
-    document.body.style.overflow = '';
-}
-function handleOverlayClick(e) {
-    if (e.target.id === 'modal-overlay') closeModal();
-}
-function setStar(n) {
-    selectedStar = n;
-    document.querySelectorAll('.star-btn').forEach((btn, i) => {
-        btn.classList.toggle('active', i < n);
-    });
-}
+// ── 8. UI 유틸리티 ────────────────────────────────────
+function openModal() { document.getElementById('modal-overlay').classList.add('active'); document.body.style.overflow = 'hidden'; }
+function closeModal() { document.getElementById('modal-overlay').classList.remove('active'); document.body.style.overflow = ''; }
+function handleOverlayClick(e) { if (e.target.id === 'modal-overlay') closeModal(); }
+function setStar(n) { selectedStar = n; document.querySelectorAll('.star-btn').forEach((btn, i) => { btn.classList.toggle('active', i < n); }); }
 function resetForm() {
     document.getElementById('place-name').value = '';
     document.getElementById('review-text').value = '';
@@ -803,13 +625,15 @@ function resetForm() {
 }
 function showToast(msg) {
     const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
+    t.textContent = msg; t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
 }
 
 // 실행
-init();
+kakao.maps.load(() => {
+    init();    // 기존 초기화 실행
+    initMap(); // 지도 초기화 실행
+});
 </script>
 </body>
 </html>
